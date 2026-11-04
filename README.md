@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="assets/readme/project-motion.svg" width="100%" alt="DJANGO SNIPPE animated overview banner" />
+</div>
+
 # django-snippe
 
 Django integration for the [Snippe](https://snippe.sh) payment gateway — mobile money, cards, and QR payments for Tanzania, Kenya, and Uganda.
