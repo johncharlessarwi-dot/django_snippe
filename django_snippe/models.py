@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.validators import MinValueValidator
+from django.db import models
 
 from .logging import PaymentLogger, PayoutLogger
 from .validators import CurrencyValidator, PhoneValidator, validate_recipient_name
@@ -69,9 +69,13 @@ class SnippePayout(models.Model):
     reference = models.CharField(max_length=100, unique=True)
     channel = models.CharField(max_length=20, choices=Channel.choices)
     amount = models.PositiveIntegerField(validators=[MinValueValidator(100)])
-    currency = models.CharField(max_length=10, default="TZS", validators=[CurrencyValidator.validate_currency])
+    currency = models.CharField(
+        max_length=10, default="TZS", validators=[CurrencyValidator.validate_currency]
+    )
     recipient_name = models.CharField(max_length=100, validators=[validate_recipient_name])
-    recipient_phone = models.CharField(max_length=20, blank=True, null=True, validators=[PhoneValidator.validate_phone])
+    recipient_phone = models.CharField(
+        max_length=20, blank=True, null=True, validators=[PhoneValidator.validate_phone]
+    )
     recipient_bank = models.CharField(max_length=50, blank=True, null=True)
     recipient_account = models.CharField(max_length=50, blank=True, null=True)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)

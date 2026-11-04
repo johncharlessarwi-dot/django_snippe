@@ -1,17 +1,16 @@
 import json
 import logging
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from .conf import get_setting
-from .models import SnippePayment, SnippePayout
 from . import signals
-from .exceptions import WebhookVerificationError, WebhookPayloadError
-
-from .logging import PaymentLogger, PayoutLogger
+from .conf import get_setting
+from .exceptions import WebhookPayloadError, WebhookVerificationError
+from .logging import PaymentLogger
+from .models import SnippePayment, SnippePayout
 
 logger = logging.getLogger(__name__)
 

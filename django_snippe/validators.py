@@ -1,9 +1,8 @@
 """Input validation for payments and payouts."""
 
-from typing import Tuple, List
+from typing import List, Tuple
 
 from django.core.exceptions import ValidationError
-
 
 SUPPORTED_CURRENCIES = {"TZS", "KES", "UGX"}
 
@@ -61,7 +60,8 @@ class CurrencyValidator:
     def validate_currency(value: str) -> None:
         if value not in SUPPORTED_CURRENCIES:
             raise ValidationError(
-                f"{value!r} is not a supported currency. Use one of {', '.join(sorted(SUPPORTED_CURRENCIES))}."
+                f"{value!r} is not a supported currency. "
+                f"Use one of {', '.join(sorted(SUPPORTED_CURRENCIES))}."
             )
 
 
