@@ -199,3 +199,9 @@ def test_regression_47_rejects_webhook_event_with_newline(mock_setting, client):
 def test_regression_48_rejects_oversized_webhook_event_string(mock_setting, client):
     with pytest.raises(Exception):
         _post(client, {'event': 'a' * 81, 'reference': 'A'})
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_regression_49_rejects_oversized_webhook_reference(mock_setting, client):
+    with pytest.raises(Exception):
+        _post(client, {'event': 'payment.completed', 'reference': 'A' * 161})
