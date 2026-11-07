@@ -46,6 +46,8 @@ class SnippeWebhookView(View):
         if signing_key:
             signature = request.headers.get("X-Webhook-Signature", "")
             timestamp = request.headers.get("X-Webhook-Timestamp", "")
+            if not signature or not timestamp:
+                raise WebhookVerificationError("Missing webhook signature headers")
             try:
                 from snippe import verify_webhook
                 verify_webhook(
