@@ -121,3 +121,8 @@ class TestPayoutValidator:
 def test_regression_18_rejects_boolean_payment_amount():
     valid, _ = PaymentValidator.validate_payment_data(True, 'TZS', '0712345678', 'mobile')
     assert not valid
+
+
+def test_regression_19_rejects_huge_payment_amount():
+    valid, _ = PaymentValidator.validate_payment_data(100_000_001, 'TZS', '0712345678', 'mobile')
+    assert not valid
