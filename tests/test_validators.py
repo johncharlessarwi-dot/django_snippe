@@ -210,3 +210,8 @@ def test_regression_35_accepts_recipient_name_at_max_length():
 def test_regression_36_rejects_invalid_payout_recipient_name():
     valid, _ = PayoutValidator.validate_payout_data(100, 'TZS', 'bank', 'Jane\nDoe')
     assert not valid
+
+
+def test_regression_37_rejects_oversized_payout_recipient_name():
+    valid, _ = PayoutValidator.validate_payout_data(100, 'TZS', 'bank', 'X' * 121)
+    assert not valid
