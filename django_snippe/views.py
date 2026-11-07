@@ -55,6 +55,9 @@ class SnippeWebhookView(View):
                 logger.warning("Snippe webhook: verification failed — %s", e)
                 raise WebhookVerificationError(f"Webhook verification failed: {e}") from e
 
+        if "data" in data and not isinstance(data["data"], dict):
+            raise WebhookPayloadError("Webhook data must be an object")
+
         event = data.get("event")
         reference = data.get("reference") or data.get("data", {}).get("reference")
 
