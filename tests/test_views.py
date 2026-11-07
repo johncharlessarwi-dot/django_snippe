@@ -133,3 +133,9 @@ def test_webhook_rejects_bad_signature(mock_verify, mock_setting, client):
                 "HTTP_X_WEBHOOK_TIMESTAMP": "12345",
             },
         )
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_regression_38_rejects_array_webhook(mock_setting, client):
+    with pytest.raises(Exception):
+        _post(client, [{'event': 'payment.completed', 'reference': 'A'}])
