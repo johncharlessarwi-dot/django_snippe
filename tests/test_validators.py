@@ -186,3 +186,8 @@ def test_regression_30_rejects_international_plus_repetition():
 def test_regression_31_rejects_shortcode_length():
     with pytest.raises(ValidationError):
         PhoneValidator.validate_phone('071234')
+
+
+def test_regression_32_rejects_recipient_name_newlines():
+    with pytest.raises(ValidationError):
+        validate_recipient_name('Jane\nDoe')
