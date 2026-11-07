@@ -1,5 +1,6 @@
 """Input validation for payments and payouts."""
 
+import re
 from typing import List, Tuple
 
 from django.core.exceptions import ValidationError
@@ -21,7 +22,7 @@ def _normalize_phone(phone: str) -> str:
     """Strip non-digits and common leading chars."""
     if not isinstance(phone, str) or not phone:
         return ""
-    if not __import__("re").fullmatch(r"\+?[0-9 ()-]+", phone):
+    if not re.fullmatch(r"\+?[0-9 ()-]+", phone):
         return ""
     cleaned = "".join(c for c in phone if c in "0123456789")
     # Strip leading country code variations to local-ish
