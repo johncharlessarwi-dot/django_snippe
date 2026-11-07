@@ -151,3 +151,8 @@ def test_regression_23_rejects_negative_payout_amount():
 def test_regression_24_rejects_punctuation_phone_injection():
     with pytest.raises(ValidationError):
         PhoneValidator.validate_phone('0712345678<script>')
+
+
+def test_regression_25_rejects_extra_digits_in_phone_number():
+    with pytest.raises(ValidationError):
+        PhoneValidator.validate_phone('0712345678999')
