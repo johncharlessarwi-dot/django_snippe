@@ -47,8 +47,6 @@ def _is_valid_east_africa_phone(phone: str) -> bool:
         # 07x for TZ/KE/UG rough
         if second in {"7", "6"} and len(cleaned) == 10:
             return True
-        if second in {"1", "2", "3", "4", "5"} and len(cleaned) == 10:
-            return True
     # Full international forms that survived normalize
     if cleaned.startswith(("255", "254", "256")) and len(cleaned) >= 12:
         return True
