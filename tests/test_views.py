@@ -187,3 +187,9 @@ def test_regression_45_rejects_leading_reference_whitespace(mock_setting, client
 def test_regression_46_rejects_event_with_slash(mock_setting, client):
     with pytest.raises(Exception):
         _post(client, {'event': 'payment/complete', 'reference': 'A'})
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_regression_47_rejects_webhook_event_with_newline(mock_setting, client):
+    with pytest.raises(Exception):
+        _post(client, {'event': 'payment.completed\n', 'reference': 'A'})
