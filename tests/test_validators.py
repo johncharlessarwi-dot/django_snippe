@@ -146,3 +146,8 @@ def test_regression_22_rejects_huge_payout_amount():
 def test_regression_23_rejects_negative_payout_amount():
     valid, _ = PayoutValidator.validate_payout_data(-1, 'TZS', 'bank', 'Jane Doe')
     assert not valid
+
+
+def test_regression_24_rejects_punctuation_phone_injection():
+    with pytest.raises(ValidationError):
+        PhoneValidator.validate_phone('0712345678<script>')
