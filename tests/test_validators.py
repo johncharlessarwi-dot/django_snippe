@@ -201,3 +201,7 @@ def test_regression_33_rejects_recipient_name_nonstring():
 def test_regression_34_rejects_recipient_name_excessive_length():
     with pytest.raises(ValidationError):
         validate_recipient_name('A' * 121)
+
+
+def test_regression_35_accepts_recipient_name_at_max_length():
+    validate_recipient_name('A' * 120)
