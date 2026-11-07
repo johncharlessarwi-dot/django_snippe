@@ -157,3 +157,9 @@ def test_regression_40_rejects_scalar_webhook_payload(mock_setting, client):
 def test_regression_41_rejects_invalid_nested_webhook_data(mock_setting, client):
     with pytest.raises(Exception):
         _post(client, {'event': 'payment.completed', 'data': [], 'reference': 'A'})
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_regression_42_rejects_numeric_webhook_reference(mock_setting, client):
+    with pytest.raises(Exception):
+        _post(client, {'event': 'payment.completed', 'reference': 123})
