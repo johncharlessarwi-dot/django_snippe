@@ -21,7 +21,9 @@ def _normalize_phone(phone: str) -> str:
     """Strip non-digits and common leading chars."""
     if not isinstance(phone, str) or not phone:
         return ""
-    cleaned = "".join(c for c in phone if c.isdigit())
+    if not __import__("re").fullmatch(r"\+?[0-9 ()-]+", phone):
+        return ""
+    cleaned = "".join(c for c in phone if c in "0123456789")
     # Strip leading country code variations to local-ish
     if cleaned.startswith("255") and len(cleaned) > 9:
         cleaned = "0" + cleaned[3:]
