@@ -35,6 +35,9 @@ class SnippeWebhookView(View):
             logger.warning("Snippe webhook: invalid JSON body — %s", e)
             raise WebhookPayloadError(f"Invalid JSON body: {e}") from e
 
+        if not isinstance(data, dict):
+            raise WebhookPayloadError("Webhook payload must be an object")
+
         # Verify signature if webhook secret is configured
         signing_key = get_setting("WEBHOOK_SECRET")
         if signing_key:
