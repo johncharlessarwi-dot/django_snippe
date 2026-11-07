@@ -161,3 +161,8 @@ def test_regression_25_rejects_extra_digits_in_phone_number():
 def test_regression_26_rejects_mobile_number_with_alphabet_characters():
     with pytest.raises(ValidationError):
         PhoneValidator.validate_phone('071234a678')
+
+
+def test_regression_27_rejects_phone_number_boolean():
+    with pytest.raises(ValidationError):
+        PhoneValidator.validate_phone(True)
