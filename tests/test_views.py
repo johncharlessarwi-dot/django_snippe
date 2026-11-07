@@ -163,3 +163,9 @@ def test_regression_41_rejects_invalid_nested_webhook_data(mock_setting, client)
 def test_regression_42_rejects_numeric_webhook_reference(mock_setting, client):
     with pytest.raises(Exception):
         _post(client, {'event': 'payment.completed', 'reference': 123})
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_regression_43_rejects_numeric_webhook_event(mock_setting, client):
+    with pytest.raises(Exception):
+        _post(client, {'event': 123, 'reference': 'A'})
