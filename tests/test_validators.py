@@ -116,3 +116,8 @@ class TestPayoutValidator:
             amount=5000, currency="TZS", channel="crypto", recipient_name="Jane Doe"
         )
         assert valid is False
+
+
+def test_regression_18_rejects_boolean_payment_amount():
+    valid, _ = PaymentValidator.validate_payment_data(True, 'TZS', '0712345678', 'mobile')
+    assert not valid
