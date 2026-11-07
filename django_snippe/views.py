@@ -71,6 +71,9 @@ class SnippeWebhookView(View):
         if not re.fullmatch(r"[a-z]+(?:\.[a-z_]+)*", event):
             raise WebhookPayloadError("Invalid webhook event name")
 
+        if not reference.strip() or reference != reference.strip():
+            raise WebhookPayloadError("Invalid webhook reference")
+
         PaymentLogger.log_webhook_received(event, reference)
 
         # Route to handler
