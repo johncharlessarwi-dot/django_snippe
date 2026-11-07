@@ -67,6 +67,9 @@ class SnippeWebhookView(View):
             logger.error("Snippe webhook: missing event or reference in payload")
             raise WebhookPayloadError("Missing 'event' or 'reference' in webhook payload")
 
+        if not __import__("re").fullmatch(r"[a-z]+(?:\.[a-z_]+)*", event):
+            raise WebhookPayloadError("Invalid webhook event name")
+
         PaymentLogger.log_webhook_received(event, reference)
 
         # Route to handler
