@@ -61,6 +61,8 @@ class SnippeWebhookView(View):
         event = data.get("event")
         reference = data.get("reference") or data.get("data", {}).get("reference")
 
+        if not isinstance(event, str) or not isinstance(reference, str) or len(event) > 80 or len(reference) > 160:
+            raise WebhookPayloadError("Invalid webhook event or reference")
         if not event or not reference:
             logger.error("Snippe webhook: missing event or reference in payload")
             raise WebhookPayloadError("Missing 'event' or 'reference' in webhook payload")
