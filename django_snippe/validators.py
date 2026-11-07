@@ -19,7 +19,7 @@ EAST_AFRICA_PHONE_REGEX_PARTS = [
 
 def _normalize_phone(phone: str) -> str:
     """Strip non-digits and common leading chars."""
-    if not phone:
+    if not isinstance(phone, str) or not phone:
         return ""
     cleaned = "".join(c for c in phone if c.isdigit())
     # Strip leading country code variations to local-ish
