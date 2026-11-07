@@ -191,3 +191,8 @@ def test_regression_31_rejects_shortcode_length():
 def test_regression_32_rejects_recipient_name_newlines():
     with pytest.raises(ValidationError):
         validate_recipient_name('Jane\nDoe')
+
+
+def test_regression_33_rejects_recipient_name_nonstring():
+    with pytest.raises(ValidationError):
+        validate_recipient_name(123)
