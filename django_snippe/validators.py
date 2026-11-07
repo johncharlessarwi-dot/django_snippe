@@ -99,7 +99,7 @@ class PaymentValidator:
         """
         errors: List[str] = []
 
-        if not isinstance(amount, int) or amount <= 0:
+        if type(amount) is not int or amount <= 0:
             errors.append("amount must be a positive integer")
 
         if currency not in SUPPORTED_CURRENCIES:
@@ -133,7 +133,7 @@ class PayoutValidator:
         """Validate payout input."""
         errors: List[str] = []
 
-        if not isinstance(amount, int) or amount <= 0:
+        if type(amount) is not int or amount <= 0:
             errors.append("amount must be a positive integer")
 
         if currency not in SUPPORTED_CURRENCIES:
