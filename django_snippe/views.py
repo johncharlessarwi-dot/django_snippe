@@ -28,6 +28,8 @@ class SnippeWebhookView(View):
     """
 
     def post(self, request, *args, **kwargs):
+        if len(request.body) > 128 * 1024:
+            raise WebhookPayloadError("Webhook payload is too large")
         # Parse raw body
         try:
             body = request.body.decode("utf-8")
