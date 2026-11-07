@@ -166,3 +166,8 @@ def test_regression_26_rejects_mobile_number_with_alphabet_characters():
 def test_regression_27_rejects_phone_number_boolean():
     with pytest.raises(ValidationError):
         PhoneValidator.validate_phone(True)
+
+
+def test_regression_28_rejects_phone_number_integer():
+    with pytest.raises(ValidationError):
+        PhoneValidator.validate_phone(712345678)
