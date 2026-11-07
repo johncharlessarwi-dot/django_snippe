@@ -139,7 +139,9 @@ class PayoutValidator:
         if currency not in SUPPORTED_CURRENCIES:
             errors.append(f"currency must be one of {', '.join(sorted(SUPPORTED_CURRENCIES))}")
 
-        if not recipient_name or len(recipient_name.strip()) < 2:
+        try:
+            validate_recipient_name(recipient_name)
+        except ValidationError:
             errors.append("recipient_name is required")
 
         if channel == "mobile":
