@@ -145,3 +145,9 @@ def test_regression_38_rejects_array_webhook(mock_setting, client):
 def test_regression_39_rejects_null_webhook(mock_setting, client):
     with pytest.raises(Exception):
         _post(client, None)
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_regression_40_rejects_scalar_webhook_payload(mock_setting, client):
+    with pytest.raises(Exception):
+        _post(client, 123)
