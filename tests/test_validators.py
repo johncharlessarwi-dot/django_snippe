@@ -141,3 +141,8 @@ def test_regression_21_rejects_boolean_payout_amount():
 def test_regression_22_rejects_huge_payout_amount():
     valid, _ = PayoutValidator.validate_payout_data(100_000_001, 'TZS', 'bank', 'Jane Doe')
     assert not valid
+
+
+def test_regression_23_rejects_negative_payout_amount():
+    valid, _ = PayoutValidator.validate_payout_data(-1, 'TZS', 'bank', 'Jane Doe')
+    assert not valid
