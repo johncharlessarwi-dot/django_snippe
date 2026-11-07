@@ -45,7 +45,7 @@ def _is_valid_east_africa_phone(phone: str) -> bool:
     if cleaned.startswith("0"):
         second = cleaned[1:2]
         # 07x for TZ/KE/UG rough
-        if second in {"7", "6"} and len(cleaned) >= 10:
+        if second in {"7", "6"} and len(cleaned) == 10:
             return True
         if second in {"1", "2", "3", "4", "5"} and len(cleaned) == 10:
             return True
