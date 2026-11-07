@@ -78,7 +78,7 @@ class PhoneValidator:
 
 def validate_recipient_name(value: str) -> None:
     """Django model field validator for payout recipient names."""
-    if not isinstance(value, str) or not value or len(value.strip()) < 2 or any(ord(char) < 32 for char in value):
+    if not isinstance(value, str) or not value or not 2 <= len(value.strip()) <= 120 or any(ord(char) < 32 for char in value):
         raise ValidationError("recipient_name must be at least 2 characters.")
 
 
