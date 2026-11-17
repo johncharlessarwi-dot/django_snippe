@@ -35,8 +35,8 @@ class SnippeWebhookView(View):
             body = request.body.decode("utf-8")
             data = json.loads(body)
         except (ValueError, UnicodeDecodeError) as e:
-            logger.warning("Snippe webhook: invalid JSON body — %s", e)
-            raise WebhookPayloadError(f"Invalid JSON body: {e}") from e
+            logger.warning("Snippe webhook: invalid JSON body")
+            raise WebhookPayloadError("Invalid JSON body") from e
 
         if not isinstance(data, dict):
             raise WebhookPayloadError("Webhook payload must be an object")
@@ -59,8 +59,8 @@ class SnippeWebhookView(View):
                     signing_key=signing_key,
                 )
             except Exception as e:
-                logger.warning("Snippe webhook: verification failed — %s", e)
-                raise WebhookVerificationError(f"Webhook verification failed: {e}") from e
+                logger.warning("Snippe webhook: signature verification failed")
+                raise WebhookVerificationError("Webhook verification failed") from e
 
         if "data" in data and not isinstance(data["data"], dict):
             raise WebhookPayloadError("Webhook data must be an object")
