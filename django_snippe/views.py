@@ -43,6 +43,8 @@ class SnippeWebhookView(View):
 
         # Verify signature if webhook secret is configured
         signing_key = get_setting("WEBHOOK_SECRET")
+        if not signing_key:
+            raise WebhookVerificationError("Webhook signature verification is not configured")
         if signing_key:
             signature = request.headers.get("X-Webhook-Signature", "")
             timestamp = request.headers.get("X-Webhook-Timestamp", "")
