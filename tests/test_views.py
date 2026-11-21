@@ -17,13 +17,15 @@ def _post(client, payload, headers=None):
         WEBHOOK_URL,
         data=json.dumps(payload),
         content_type="application/json",
-        **(headers or {}),
+        **({"HTTP_X_WEBHOOK_SIGNATURE": "test-signature",
+            "HTTP_X_WEBHOOK_TIMESTAMP": "12345", **(headers or {})}),
     )
 
 
 @pytest.fixture
 def client():
-    return Client()
+    with patch("snippe.verify_webhook"):
+        yield Client()
 
 
 def _make_payment(reference="WH-REF", status=SnippePayment.Status.PENDING):
@@ -49,7 +51,7 @@ def test_webhook_requires_event_and_reference(mock_setting, client):
         _post(client, {"event": "payment.completed"})  # missing reference
 
 
-@patch("django_snippe.views.get_setting", return_value=None)
+@patch("django_snippe.views.get_setting", return_value="whsec_test")
 def test_webhook_marks_payment_completed(mock_setting, client):
     payment = _make_payment()
     received = {}
@@ -69,7 +71,7 @@ def test_webhook_marks_payment_completed(mock_setting, client):
     assert received["payment"].reference == payment.reference
 
 
-@patch("django_snippe.views.get_setting", return_value=None)
+@patch("django_snippe.views.get_setting", return_value="whsec_test")
 def test_webhook_marks_payment_failed(mock_setting, client):
     payment = _make_payment(reference="WH-FAIL")
     response = _post(client, {"event": "payment.failed", "reference": payment.reference})
@@ -78,7 +80,7 @@ def test_webhook_marks_payment_failed(mock_setting, client):
     assert payment.status == SnippePayment.Status.FAILED
 
 
-@patch("django_snippe.views.get_setting", return_value=None)
+@patch("django_snippe.views.get_setting", return_value="whsec_test")
 def test_webhook_marks_payout_completed(mock_setting, client):
     payout = SnippePayout.objects.create(
         reference="PO-WH-1",
@@ -95,7 +97,7 @@ def test_webhook_marks_payout_completed(mock_setting, client):
     assert payout.status == SnippePayout.Status.COMPLETED
 
 
-@patch("django_snippe.views.get_setting", return_value=None)
+@patch("django_snippe.views.get_setting", return_value="whsec_test")
 def test_webhook_unknown_event_is_ignored_gracefully(mock_setting, client):
     payment = _make_payment(reference="WH-UNKNOWN")
     response = _post(client, {"event": "payment.something_new", "reference": payment.reference})
@@ -133,6 +135,15 @@ def test_webhook_rejects_bad_signature(mock_verify, mock_setting, client):
                 "HTTP_X_WEBHOOK_TIMESTAMP": "12345",
             },
         )
+
+
+@patch("django_snippe.views.get_setting", return_value=None)
+def test_webhook_fails_closed_without_signing_configuration(mock_setting, client):
+    payment = _make_payment(reference="WH-UNSIGNED")
+    with pytest.raises(Exception, match="signature verification is not configured"):
+        _post(client, {"event": "payment.completed", "reference": payment.reference})
+    payment.refresh_from_db()
+    assert payment.status == SnippePayment.Status.PENDING
 
 
 @patch("django_snippe.views.get_setting", return_value=None)
