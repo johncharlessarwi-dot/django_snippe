@@ -1,5 +1,10 @@
 {% extends "admin/change_list.html" %}
 {% block content %}
+  {% if perms.django_snippe.view_snippepayout or perms.django_snippe.change_snippepayout %}
+    <nav aria-label="Payment operations">
+      <a href="{% url 'admin:django_snippe_snippepayout_changelist' %}">View payouts</a>
+    </nav>
+  {% endif %}
   {{ block.super }}
   <p>Fork maintained by John Charles Sarwi · <a href="https://wa.me/255698170989">Contact the maintainer on WhatsApp</a></p>
 {% endblock %}
